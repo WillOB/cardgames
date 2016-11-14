@@ -2,5 +2,6 @@ require './deck'
 require './card'
 deck = Deck.new
 
-newdeck = deck.newDeck.shuffle
+newdeck = deck.newDeck
 puts newdeck[0].rank
+puts newdeck[0].suit

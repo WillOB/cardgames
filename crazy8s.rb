@@ -2,11 +2,11 @@ require './deck'
 require './card'
 require './scan'
 
-deck = Deck.new
-p1 = deck.cards[0..4]
-p2 = deck.cards[5..9]
-discard = [deck.cards[10]]
-deck = deck.cards.drop(11)
+deck = Deck.new.newDeck
+p1 = deck[0..4]
+p2 = deck[5..9]
+discard = [deck[10]]
+deck = deck.drop(11)
 
 while p1.length != 0 && p2.length != 0
 
@@ -15,28 +15,45 @@ faceUp = discard[0]
 suit = faceUp.suit
 rank = faceUp.rank
 
-puts "Card is the #{rank} of #{suit}."
-puts "You hand is: #{p1}"
+puts "The card is the #{rank} of #{suit}."
+puts "Your cards are:"
+num = 1
+p1.each do |x|
+  puts "#{num}: #{x.rank} of #{x.suit}"
+  num += 1
+end
 
 matches = 0
 p1.each do |x|
-  cardSuit = p1[0].suit
-  cardRank = p1[0].rank
-  if cardRank == 8
-
-  elsif suit = cardSuit || rank = cardRank
+  if x.rank == 8
+    matches += 1
+  elsif suit == x.suit || rank == x.rank
     matches += 1
   end
 
 end
 
-if matches == 1
-  puts "You can play your"
-elsif matches > 1
-  print "Which will you play?"
+
+if matches > 0
+  print "Which card will you play?"
   pick = scan
 else
   puts "You cannot play anything. Draw a card."
-  p1.push
 end
+
+while pick < 1 || pick > 5
+  #tell them no
+if pickRank == 8
+  #dostuff
+elsif pickRank == rank || pickSuit == suit
+  #do other stuff
+else
+  puts "Nuh uh! Pick another card."
+end
+
+
+
+
+
+
 end

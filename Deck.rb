@@ -15,7 +15,6 @@ class Deck
       else
         rank = number % 13
       end
-      # good
       if number >= 1 && number < 14
         suit = "Hearts"
       elsif number >= 14 && number < 27
@@ -29,16 +28,16 @@ class Deck
       order.push(Card.new(rank, suit))
       number += 1
     end
-    return order
+    return order.shuffle
   end
 
-  def cards
-    return order
-  end
-#Could be better
-  def shuffle
-    order.shuffle
-    return order
-  end
-#
+#  def cards
+#    return order
+#  end
+
+#  def shuffle
+#    order.shuffle
+#    return order
+#  end
+
 end
