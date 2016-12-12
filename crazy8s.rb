@@ -18,10 +18,10 @@ rank = faceUp.rank
 
 puts "The card is the #{rank} of #{suit}."
 puts "Your cards are:"
-num = 1
+n = 1
 p1.each do |card|
-  puts "#{num}: #{card.rank} of #{card.suit}"
-  num += 1
+  puts "#{n}: #{card.rank} of #{card.suit}"
+  n += 1
 end
 
 matches = 0
@@ -38,6 +38,7 @@ if matches > 0
   pick = scan.to_i
 else
   puts "You cannot play anything. Draw a card."
+  p1.push
 end
 
 while pick < 1 || pick > 5
@@ -59,15 +60,28 @@ if pickRank == 8
   print "Pick a new suit. > "
   newSuit = scan.downcase!
   discard.push(Card.new(pickRank, pickSuit))
-  p1.delete_at(pick-1)
+  p1.delete_at(pick - 1)
   num += 1
   p1.push(deck[num])
 elsif pickRank == rank || pickSuit == suit
   discard.push(Card.new(pickRank, pickSuit))
-  p1.delete_at(pick-1)
+  p1.delete_at(pick - 1)
   num += 1
   p1.push(deck[num])
 end
 
+matches2 = 0
+p2.each do |card|
+  if card.rank == 8
+    matches2 += 1
+  elsif suit == card.suit || rank == card.rank
+    matches2 += 1
+  end
+end
 
+if matches2 > 0
+  #do stuff
+else
+  puts "Computer draws a card."
+end
 end
