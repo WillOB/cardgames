@@ -25,19 +25,14 @@ class Deck
         suit = "Clubs"
       end
       #
-      order.push(Card.new(rank, suit))
+      @order.push(Card.new(rank, suit))
       number += 1
     end
-    return order.shuffle
+    return @order
   end
 
-#  def cards
-#    return order
-#  end
-
-#  def shuffle
-#    order.shuffle
-#    return order
-#  end
+  def shuffle
+    return @order.shuffle
+  end
 
 end

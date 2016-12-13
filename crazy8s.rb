@@ -2,7 +2,7 @@ require './deck'
 require './card'
 require './scan'
 
-deck = Deck.new.newDeck
+deck = Deck.new.newDeck.shuffle
 p1 = deck[0..4]
 p2 = deck[5..9]
 discard = [deck[10]]
@@ -33,13 +33,13 @@ p1.each do |card|
   end
 end
 
-if matches > 0
-  print "Which card will you play? >"
-  pick = scan.to_i
-else
+while matches == 0
   puts "You cannot play anything. Draw a card."
-  p1.push
+  p1.push()
 end
+
+print "Which card will you play? >"
+pick = scan.to_i
 
 while pick < 1 || pick > 5
   print "Please enter the number of the card you want to play. >"
