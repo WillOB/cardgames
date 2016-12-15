@@ -10,22 +10,18 @@ discard = [deck[10]]
 deck = deck.drop(11)
 
 
-def print_cards
-  faceUp = discard[-1]
-  suit = faceUp.suit
-  rank = faceUp.rank
-
+def print_cards(suit, rank, cards)  #prints all cards in player's hand and face-up card
   puts "The card is the #{rank} of #{suit}."
   puts "Your cards are:"
   n = 1
-  player.each do |card|
+  cards.each do |card|
     puts "#{n}: #{card.rank} of #{card.suit}"
     n += 1
   end
 end
 
 
-def determine_matches(p_or_c)
+def matches(p_or_c, suit, rank) #determines number of matches computer or player has in their hand
   matches = 0
   p_or_c.each do |card|
     if card.rank == 8
@@ -38,22 +34,91 @@ def determine_matches(p_or_c)
 end
 
 
-setup #create deck, give 5 cards from deck to each player, move one to discard
-while player.length > 0 && computer.length > 0
-  print_cards #prints all cards in player's hand and face-up card
-  determine_matches(player) #makes sure there is a match
-  while matches == 0
-    draw_card(player)
-    print_cards
-    determine_matches
+def draw_card(p_or_c, deck) #takes top card from deck and add to bottom of player's or computer's deck
+  p_or_c.push(deck[0])
+  if p_or_c == "player"
+    puts "You drew the #{deck[0].rank} of #{deck[0].suit}."
   end
-  check_card #ask for card and make sure it works
-  draw_card(player) #take top card from deck and add to bottom of player
-  update #take card from player add to top of discard
-  determine_matches(computer)
-  pick_card
-  draw_card(computer)
-  update
+  deck.drop(1)
+end
+
+
+def ask_card(player, suit, rank)  #asks for card and make sure it works, return which card is selected
+  print "Which card will you play? >"
+  pick = scan.to_i - 1
+
+  while pick < 0 || pick > player.length - 1
+    print "Please enter the number of the card you want to play. >"
+    pick = scan.to_i
+  end
+
+  pickSuit = player[pick].suit
+  pickRank = player[pick].rank
+
+  while !(pickRank == rank || pickSuit == suit || pickRank == 8)
+      print "You can't play that card! Pick another. >"
+      pick = scan.to_i - 1
+      pickSuit = player[pick].suit
+      pickRank = player[pick].rank
+      while pick < 0 || pick > player.length - 1
+        print "Please enter the number of the card you want to play. >"
+        pick = scan.to_i - 1
+      end
+  end
+  puts "You played the #{pickRank} of #{pickSuit}."
+  return pick
+end
+
+
+def update(p_or_c, pick, discard) #take card from player add to top of discard
+  discard.push(p_or_c[pick])
+  p_or_c.delete_at(pick)
+end
+
+
+def pick_card(matches, computer, suit, rank)  #picks the card the computer will play
+  pick = -1
+  num = 0
+     while pick == -1
+       computer.each do |card|
+         if card.rank == 8 || card.rank == rank || card.suit == suit
+           pick = num
+         end
+         num += 1
+       end
+    end
+  puts "The computer took its turn."
+  return pick
+end
+
+
+while player.length > 0 && computer.length > 0 #make a while loop to make sure the deck doesn't run out
+  while deck.length > 0
+    suit = discard[-1].suit
+    rank = discard[-1].rank
+    print_cards(suit, rank, player)
+    while matches(player, suit, rank) == 0
+      draw_card(player, deck)
+      print_cards(suit, rank, player)
+      matches(player, suit, rank)
+    end
+    update(player, ask_card(player, suit, rank), discard)
+    suit = discard[-1].suit
+    rank = discard[-1].rank
+    draw_card(player, deck)
+    matches = matches(computer, suit, rank)
+    while matches == 0
+      draw_card(computer, deck)
+      matches(computer, suit, rank)
+    end
+    pick = pick_card(matches, computer, suit, rank)
+    update(computer, pick, discard)
+    draw_card(computer, deck)
+  end
+  faceUp = discard[-1]
+  discard.delete_at[-1]
+  deck = discard.shuffle
+  discard = [faceUp]
 end
 
 if player.length == 0
