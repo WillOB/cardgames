@@ -1,9 +1,10 @@
 require './deck'
 require './scan'
+require './card'
 
-deck = Deck.new
-p1 = deck.cards[0..25]
-p2 = deck.cards[26..51]
+deck = Deck.new.newDeck.shuffle
+p1 = deck[0..25]
+p2 = deck[26..51]
 
 print "Enter player one's name: "
 name1 = scan
@@ -25,7 +26,7 @@ elsif yourCard == 13
 elsif yourCard == 1
   puts "#{name1}'s card is an Ace"
 else
-  puts "#{name1}'s card is #{yourCard}."
+  puts "#{name1}'s card a #{yourCard.rank}."
 end
 if otherCard == 11
   puts "#{name2}'s card is a Jack."
@@ -34,13 +35,13 @@ elsif otherCard == 12
 elsif otherCard == 13
   puts "#{name2}'s card is a King."
 else
-puts "#{name2}'s card is #{otherCard}."
+puts "#{name2}'s card is a #{otherCard.rank}."
 end
 
-if yourCard > otherCard
+if yourCard.rank > otherCard.rank
   puts "#{name1} wins this draw."
   p1.push(yourCard).push(otherCard)
-elsif otherCard > yourCard
+elsif otherCard.rank > yourCard.rank
   puts "#{name2} wins this draw."
   p2.push(otherCard).push(yourCard)
 else
@@ -60,9 +61,9 @@ else
     p2 = []
     p2.push(p2[0]).push(p1[0])
   else
-  puts "#{name1}'s card is #{p1[2]}."
-  puts "#{name2}'s card is #{p2[2]}."
-  if p2[2] > p1[2]
+  puts "#{name1}'s card is a #{p1[2].rank}."
+  puts "#{name2}'s card is a #{p2[2].rank}."
+  if p2[2].rank > p1[2].rank
     puts "#{name2} wins the war!"
     p2.push(otherCard).push(yourCard).push(p2[1]).push(p2[2]).push(p1[1]).push(p1[2])
     p1 = p1.drop(2)
