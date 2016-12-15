@@ -55,6 +55,7 @@ def ask_card(player, suit, rank)  #asks for card and make sure it works, return 
   pickSuit = player[pick].suit
   pickRank = player[pick].rank
 
+
   while !(pickRank == rank || pickSuit == suit || pickRank == 8)
       print "You can't play that card! Pick another. >"
       pick = scan.to_i - 1
@@ -65,6 +66,7 @@ def ask_card(player, suit, rank)  #asks for card and make sure it works, return 
         pick = scan.to_i - 1
       end
   end
+
   puts "You played the #{pickRank} of #{pickSuit}."
   return pick
 end
@@ -87,33 +89,49 @@ def pick_card(matches, computer, suit, rank)  #picks the card the computer will 
          num += 1
        end
     end
-  puts "The computer took its turn."
+
+  puts "\nThe computer took its turn."
   return pick
 end
 
 
-while player.length > 0 && computer.length > 0 #make a while loop to make sure the deck doesn't run out
+while player.length > 0 && computer.length > 0
   while deck.length > 0
     suit = discard[-1].suit
     rank = discard[-1].rank
+    if discard[-1].rank == 8
+      n = rand(4)
+      if n == 1
+        suit = "spades"
+      elsif n == 2
+        suit = "clubs"
+      elsif n == 3
+        suit = "hearts"
+      else
+        suit = "diamonds"
+      end
+    end
     print_cards(suit, rank, player)
     while matches(player, suit, rank) == 0
       draw_card(player, deck)
       print_cards(suit, rank, player)
-      matches(player, suit, rank)
+      #matches(player, suit, rank)
     end
     update(player, ask_card(player, suit, rank), discard)
-    suit = discard[-1].suit
     rank = discard[-1].rank
-    draw_card(player, deck)
+    if rank == 8
+      print "Which suit should your opponent play? >"
+      suit = scan.to_s.downcase
+    else
+      suit = discard[-1].suit
+    end
     matches = matches(computer, suit, rank)
     while matches == 0
       draw_card(computer, deck)
-      matches(computer, suit, rank)
+      #matches(computer, suit, rank)
     end
     pick = pick_card(matches, computer, suit, rank)
     update(computer, pick, discard)
-    draw_card(computer, deck)
   end
   faceUp = discard[-1]
   discard.delete_at[-1]

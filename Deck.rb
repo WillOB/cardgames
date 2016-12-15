@@ -16,13 +16,13 @@ class Deck
         rank = number % 13
       end
       if number >= 1 && number < 14
-        suit = "Hearts"
+        suit = "hearts"
       elsif number >= 14 && number < 27
-        suit = "Diamonds"
+        suit = "diamonds"
       elsif number >= 27 && number < 40
-        suit = "Spades"
+        suit = "spades"
       else
-        suit = "Clubs"
+        suit = "clubs"
       end
       #
       @order.push(Card.new(rank, suit))
